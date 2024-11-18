@@ -49,3 +49,20 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE PROCEDURE sp_total_pedidos_cliente_inout (INOUT cod_cliente INT)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total_pedidos INT;
+BEGIN
+    SELECT COUNT(*) INTO total_pedidos
+    FROM tb_pedido
+    WHERE cod_cliente = cod_cliente;
+
+    cod_cliente := total_pedidos;
+
+    -- Inserir registro no log
+    INSERT INTO tb_log (nome_procedimento) VALUES ('sp_total_pedidos_cliente_inout');
+END;
+$$;
+
