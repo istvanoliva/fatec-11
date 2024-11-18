@@ -18,3 +18,20 @@ BEGIN
     INSERT INTO tb_log (nome_procedimento) VALUES ('sp_cadastrar_cliente');
 END;
 $$;
+
+CREATE OR REPLACE PROCEDURE sp_total_pedidos_cliente (IN cod_cliente INT)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total_pedidos INT;
+BEGIN
+    SELECT COUNT(*) INTO total_pedidos
+    FROM tb_pedido
+    WHERE cod_cliente = cod_cliente;
+
+    RAISE NOTICE 'O cliente possui % pedidos.', total_pedidos;
+
+    -- Inserir registro no log
+    INSERT INTO tb_log (nome_procedimento) VALUES ('sp_total_pedidos_cliente');
+END;
+$$;
