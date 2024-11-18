@@ -86,3 +86,12 @@ BEGIN
 END;
 $$;
 
+DO $$
+DECLARE
+    resultado TEXT;
+BEGIN
+    CALL sp_cadastrar_varios_clientes('Pedro', 'Ana', 'João', resultado);
+    RAISE NOTICE '%', resultado;
+END;
+$$;
+
