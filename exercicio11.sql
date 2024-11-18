@@ -66,3 +66,23 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE PROCEDURE sp_cadastrar_varios_clientes (
+    VARIADIC nomes VARCHAR[],
+    OUT resultado TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    nome VARCHAR;
+BEGIN
+    FOREACH nome IN ARRAY nomes LOOP
+        INSERT INTO tb_cliente (nome) VALUES (nome);
+    END LOOP;
+
+    resultado := 'Os clientes: ' || array_to_string(nomes, ', ') || ' foram cadastrados';
+
+    -- Inserir registro no log
+    INSERT INTO tb_log (nome_procedimento) VALUES ('sp_cadastrar_varios_clientes');
+END;
+$$;
+
