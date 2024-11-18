@@ -35,3 +35,17 @@ BEGIN
     INSERT INTO tb_log (nome_procedimento) VALUES ('sp_total_pedidos_cliente');
 END;
 $$;
+
+CREATE OR REPLACE PROCEDURE sp_total_pedidos_cliente_out (IN cod_cliente INT, OUT total_pedidos INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    SELECT COUNT(*) INTO total_pedidos
+    FROM tb_pedido
+    WHERE cod_cliente = cod_cliente;
+
+    -- Inserir registro no log
+    INSERT INTO tb_log (nome_procedimento) VALUES ('sp_total_pedidos_cliente_out');
+END;
+$$;
+
